@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const SaPerformance = () => {
   const [data, setData] = useState([]);
@@ -7,6 +8,8 @@ const SaPerformance = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [sortConfig, setSortConfig] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   useEffect(() => {
     fetch('/api/sales-performance')
@@ -18,6 +21,51 @@ const SaPerformance = () => {
       .catch(error => console.error('Error:', error));
   }, []);
 
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!file) {
+      alert("Silakan pilih file untuk diunggah");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await axios.post('/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('File berhasil diunggah: ' + response.data.message);
+      setIsModalOpen(false); // Tutup modal setelah unggah
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Gagal mengunggah file");
+    }
+  };
+
+  //   const formData = new FormData();
+  //   formData.append('file', file);
+
+  //   try {
+  //     const response = await axios.post('/api/upload', formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     });
+  //     alert('File berhasil diunggah: ' + response.data.message);
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //     alert("Gagal mengunggah file");
+  //   }
+  // };
   const handleFilterChange = (event) => {
     const filter = event.target.value;
     setFilterFunnel(filter);
@@ -69,12 +117,59 @@ const SaPerformance = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 justify-between">
+        <div className='flex gap-4 mb-8'>
         <button className="
         bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
         onClick={() => window.history.back()}
         >
-          Back</button>
+          Back
+        </button>
+
+        </div>
+        <div className="ml-auto text-right">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="text-white hover:bg-red-500 text-5xl bg-gray-500 p-5 rounded-full"
+          >
+            +
+          </button>
+        </div>
+        {/* Icon Plus */}
+
+        {/* Modal untuk Unggah File */}
+        {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg p-8 shadow-lg w-96">
+              <h2 className="text-2xl font-semibold mb-4 text-blue-700">Unggah File</h2>
+
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  className="border border-blue-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+
+                <div className="flex gap-4">
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                    disabled={!file}
+                  >
+                    Unggah
+                  </button>
+                  <button
+                    onClick={() => setIsModalOpen(false)}
+                    type="button"
+                    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
         {/* Header Section */}
         <div className="text-center mb-10">
           <h1 className="text-5xl font-bold text-blue-700 mb-4">SA Performance</h1>

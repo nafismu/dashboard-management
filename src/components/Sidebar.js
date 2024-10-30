@@ -83,6 +83,12 @@ function Sidebar({ role, isOpen, toggleSidebar }) {
             Manage Customers
           </Link>
         </li>
+              <li className="flex items-center space-x-2">
+          <DocumentAddIcon className="w-5 h-5" />
+          <Link to="/input-data-sales" className="block p-2 rounded hover:bg-indigo-600">
+            Input data sales
+          </Link>
+        </li>
           </>
         )}
         

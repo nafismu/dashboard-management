@@ -13,6 +13,7 @@ import EmployeeList from './components/EmployeeList';
 import SaFunnel from './components/SaFunnel';
 import EmployeeChart from './components/EmployeeChart';
 import Unauthorized from './pages/Unauthorized';
+import InputDataSales from './pages/InputDataSales';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route element={<EmployeeRoute />}>
             <Route path="/employee" element={<EmployeePage />} />
             <Route path="/customers-list-employee" element={<CustomersList />}/>
+            <Route path="/input-data-sales" element={<InputDataSales/>}/>
           </Route>
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/EmployeeChart" element={<EmployeeChart />} />

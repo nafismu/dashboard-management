@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 // import PieChart from '../components/PieChart';
-import CustomersList from './CustomersList';
+// import CustomersList from './CustomersList';
 import { BellIcon, UserIcon,ChevronDoubleRightIcon, ChevronDoubleLeftIcon } from '@heroicons/react/outline';
 import Line1Chart from '../components/Charts/Line1Chart';
 
