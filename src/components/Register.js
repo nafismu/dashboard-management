@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Swal from 'sweetalert2';
+import Helmet from 'react-helmet';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -51,6 +52,7 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Helmet><title>Register Page</title></Helmet>
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         <form onSubmit={handleRegister}>

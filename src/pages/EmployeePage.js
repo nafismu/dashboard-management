@@ -4,6 +4,8 @@ import Sidebar from '../components/Sidebar';
 // import CustomersList from './CustomersList';
 import { BellIcon, UserIcon,ChevronDoubleRightIcon, ChevronDoubleLeftIcon } from '@heroicons/react/outline';
 import Line1Chart from '../components/Charts/Line1Chart';
+import Helmet from 'react-helmet'
+import MotivationalCard from '../components/MotivationalCard';
 
 function EmployeePage() {
   const [user, setUser] = useState(null);
@@ -35,10 +37,11 @@ function EmployeePage() {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <Helmet><title>Employee Dashboard Page</title></Helmet>
       <Sidebar role="employee" isOpen={isOpen} toggleSidebar={toggleSidebar} />
       <div className={`flex-1 p-6 transition-all duration-300 ${isOpen ? 'ml-64' : 'ml-0'}`}>
         {/* Header Section with Toggle Sidebar */}
-        <div className='flex justify-between items-center mb-4 gap-4 bg-blue-700 text-white p-4 rounded shadow' style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)' }}>
+        <div className='flex justify-between items-center mb-4 gap-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white p-4 rounded shadow' style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)' }}>
           {/* Brand Section */}
           <div className="flex items-center gap-4">
             <h2 className="text-2xl md:text-3xl font-bold">Dashboard Laporan Indibiz</h2>
@@ -47,7 +50,7 @@ function EmployeePage() {
           {/* Right Section: Notification, User Info */}
           <div className='flex justify-end items-center gap-4'>
             {/* Toggle Sidebar Button */}
-            <button onClick={toggleSidebar} className="bg-indigo-500 p-2 rounded-full text-white hover:bg-indigo-600 transition">
+            <button onClick={toggleSidebar} className=" p-2 rounded-full text-white hover:bg-indigo-600 transition">
               {isOpen ? <ChevronDoubleLeftIcon className="w-6 h-6" /> : <ChevronDoubleRightIcon className="w-6 h-6" />}
             </button>
 
@@ -71,21 +74,22 @@ function EmployeePage() {
         {/* Dashboard Content */}
         <div className="mb-4 p-6 bg-white rounded shadow-lg">
           {/* Stats Section */}
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-6'>
+              <MotivationalCard/>
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mt-4 mb-6'>
             {/* Card 1 */}
-            <div className='bg-gray-200 p-6 rounded-lg shadow-md'>
-              <h2 className="text-xl font-bold mb-2">Total Customers</h2>
-              <p className="text-3xl font-bold text-indigo-600">500</p>
+            <div className='bg-blue-400 p-6 rounded-lg drop-shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl'>
+              <h2 className="text-xl text-white font-bold mb-2">Total Customers</h2>
+              <p className="text-3xl font-bold text-white">500</p>
             </div>
             {/* Card 2 */}
-            <div className='bg-gray-200 p-6 rounded-lg shadow-md'>
-              <h2 className="text-xl font-bold mb-2">New Customers</h2>
-              <p className="text-3xl font-bold text-indigo-600">150</p>
+            <div className='bg-blue-400 p-6 rounded-lg drop-shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl'>
+              <h2 className="text-xl text-white font-bold mb-2">New Customers</h2>
+              <p className="text-3xl font-bold text-white">150</p>
             </div>
             {/* Card 3 */}
-            <div className='bg-gray-200 p-6 rounded-lg shadow-md'>
-              <h2 className="text-xl font-bold mb-2">Returning Customers</h2>
-              <p className="text-3xl font-bold text-indigo-600">350</p>
+            <div className='bg-blue-400 p-6 rounded-lg drop-shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl'>
+              <h2 className="text-xl text-white font-bold mb-2">Returning Customers</h2>
+              <p className="text-3xl text-white font-bold">350</p>
             </div>
           </div>
 

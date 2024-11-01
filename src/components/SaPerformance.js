@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Helmet from 'react-helmet'
 
 const SaPerformance = () => {
   const [data, setData] = useState([]);
@@ -51,21 +52,6 @@ const SaPerformance = () => {
     }
   };
 
-  //   const formData = new FormData();
-  //   formData.append('file', file);
-
-  //   try {
-  //     const response = await axios.post('/api/upload', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-  //     alert('File berhasil diunggah: ' + response.data.message);
-  //   } catch (error) {
-  //     console.error("Error uploading file:", error);
-  //     alert("Gagal mengunggah file");
-  //   }
-  // };
   const handleFilterChange = (event) => {
     const filter = event.target.value;
     setFilterFunnel(filter);
@@ -117,6 +103,7 @@ const SaPerformance = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <Helmet><title>Sales Performance Page</title></Helmet>
       <div className="container mx-auto px-4 py-8 justify-between">
         <div className='flex gap-4 mb-8'>
         <button className="
@@ -127,10 +114,16 @@ const SaPerformance = () => {
         </button>
 
         </div>
-        <div className="ml-auto text-right">
+        <div className="ml-auto text-right sticky">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="text-white hover:bg-red-500 text-5xl bg-gray-500 p-5 rounded-full"
+            className="text-white hover:bg-red-500 text-center text-3xl bg-gray-500 p-6 rounded-full"
+          style={{
+            position: 'fixed',
+            right: '20px',
+            bottom: '20px',
+            zIndex: 1000,
+          }}
           >
             +
           </button>

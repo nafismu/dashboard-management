@@ -26,7 +26,7 @@ const InputDataSales = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white ">
       <div className="container mx-auto px-4 py-8 justify-between">
         {/* <div className='p-4 m-4 '> */}
         <div className='flex gap-4 mb-8'>

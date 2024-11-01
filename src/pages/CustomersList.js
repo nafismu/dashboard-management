@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Helmet from 'react-helmet'
 
 const CustomersList = () => {
     const [customers, setCustomers] = useState([]);
@@ -198,6 +199,7 @@ const CustomersList = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+            <Helmet><title>Customer List Page</title></Helmet>
             <div className='container mx-auto py-8'>
             <button
                 className="bg-indigo-500 text-white font-bold py-2 px-4 mb-4 rounded-md mr-4"

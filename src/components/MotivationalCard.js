@@ -7,21 +7,11 @@ const MotivationalCard = () => {
   useEffect(() => {
     const fetchMotivation = async () => {
       try {
-        const response = await axios.post(
-          'https://api.openai.com/v1/engines/davinci/completions',
-          {
-            prompt: "Berikan kata-kata motivasi singkat untuk memulai hari dengan semangat:",
-            max_tokens: 50,
-            temperature: 0.7
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer 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`
-            }
-          }
+        const response = await axios.get(
+          '/api/motivation',
         );
-        setMotivationText(response.data.choices[0].text.trim());
+        setMotivationText(response.data[(Math.random() * response.data.length) | 0]);
+        // console.log(motivationText);
       } catch (error) {
         console.error("Error fetching motivational text:", error);
         setMotivationText("Tetap semangat, Anda hebat!");
@@ -29,11 +19,11 @@ const MotivationalCard = () => {
     };
 
     fetchMotivation();
-  }, []);
+  });
 
   return (
-    <div className="bg-gradient-to-r from-blue-400 to-purple-500 text-white p-4 rounded-lg shadow-lg hover:scale-105 transition-transform">
-      <h2 className="text-xl font-semibold mb-2">Selamat Datang di Dashboard Indibiz!</h2>
+    <div className="bg-blue-400 text-white p-4 rounded-lg shadow-lg">
+      <h2 className="text-xl font-bold mb-2">Selamat Datang di Dashboard Indibiz!</h2>
       <p className="text-lg">
         {motivationText}
       </p>
@@ -41,9 +31,6 @@ const MotivationalCard = () => {
         <p className="font-medium">Target Bulanan: 100 Pelanggan Baru</p>
         <p className="font-medium">Progres Mingguan: 50%</p>
       </div>
-      <button className="mt-4 bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition-colors">
-        Lihat Target Anda
-      </button>
     </div>
   );
 };

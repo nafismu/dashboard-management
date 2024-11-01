@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Helmet from 'react-helmet'
 
 const SaFunnel = () => {
   const [data, setData] = useState([]);
@@ -69,6 +70,7 @@ const SaFunnel = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <Helmet><title>Sales Funnel Page</title></Helmet>
       <div className="container mx-auto px-4 py-8">
         <button className="
         bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"

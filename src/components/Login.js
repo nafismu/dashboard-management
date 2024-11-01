@@ -3,6 +3,7 @@ import axios from 'axios';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import {Helmet} from "react-helmet";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -67,6 +68,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <Helmet><title>Login Page</title></Helmet>
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form onSubmit={handleLogin}>
