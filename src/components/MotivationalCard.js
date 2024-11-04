@@ -11,7 +11,6 @@ const MotivationalCard = () => {
           '/api/motivation',
         );
         setMotivationText(response.data[(Math.random() * response.data.length) | 0]);
-        // console.log(motivationText);
       } catch (error) {
         console.error("Error fetching motivational text:", error);
         setMotivationText("Tetap semangat, Anda hebat!");
