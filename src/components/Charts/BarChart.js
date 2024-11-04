@@ -22,7 +22,7 @@ const BarChart = () => {
     const fetchData = async () => {
       try {
         // Mengambil data dari backend Flask
-        const response = await axios.get('http://127.0.0.1:5000/sales-data');
+        const response = await axios.get('/api/sales-data');
         
         const { labels, sales } = response.data;
         

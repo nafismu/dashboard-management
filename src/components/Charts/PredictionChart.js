@@ -11,7 +11,7 @@ const PredictionChart = () => {
   useEffect(() => {
     const fetchPredictions = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/predict?months=3');
+        const response = await axios.get('/api/predict?months=3');
         setSalesData(response.data.sales);
         setCustomerData(response.data.customers);
       } catch (error) {

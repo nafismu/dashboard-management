@@ -21,7 +21,7 @@ const Login = () => {
   
     try {
       // Mengirim permintaan login ke server
-      const response = await axios.post('/auth/login', {
+      const response = await axios.post('/api/auth/login', {
         username,
         password,
       });
