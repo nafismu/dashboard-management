@@ -44,7 +44,7 @@ const Login = () => {
   
       // Redirect berdasarkan role
       if (role === 'admin') {
-        console.log(role);
+        // console.log(role);
         navigate('/admin');  // Redirect ke halaman admin
       } else if (role === 'employee') {
         navigate('/employee');  // Redirect ke halaman employee

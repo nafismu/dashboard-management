@@ -195,64 +195,68 @@ const EmployeeList = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-        <Helmet><title>Employee List Page</title></Helmet>
-        <div className='container mx-auto py-8'>
-            <button
-                className="bg-indigo-500 text-white font-bold py-2 px-4 mb-4 rounded-md mr-4"
-                onClick={() => window.history.back()}
-            >
-                Kembali
-            </button>
-            <button
-                className="bg-green-500 text-white font-bold py-2 px-4 mb-4 rounded-md"
-                onClick={handleCreate}
-            >
-                Tambah Pegawai
-            </button>
-            <div className="text-center mb-10">
-          <h1 className="text-5xl font-bold text-blue-700 mb-4">List Daftar Pegawai</h1>
-          <div className="w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
-        </div>
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border">
-                    <thead>
-                        <tr className="w-full bg-gray-200 text-left">
-                            <th className="py-3 px-6 border-b-2">No</th>
-                            <th className="py-3 px-6 border-b-2">Nama</th>
-                            <th className="py-3 px-6 border-b-2">Nomor Telepon</th>
-                            <th className="py-3 px-6 border-b-2">Email</th>
-                            <th className="py-3 px-6 border-b-2">Alamat/Asal</th>
-                            <th className="py-3 px-6 border-b-2">Posisi</th>
-                            <th className="py-3 px-6 border-b-2">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {employees.map((employee, index) => (
-                            <tr key={employee.id} className="border-b hover:bg-gray-100">
-                                <td className="py-3 px-6 text-left">{index + 1}</td>
-                                <td className="py-3 px-6 text-left">{employee.name}</td>
-                                <td className="py-3 px-6 text-left">{employee.phone}</td>
-                                <td className="py-3 px-6 text-left">{employee.email}</td>
-                                <td className="py-3 px-6 text-left">{employee.address}</td>
-                                <td className="py-3 px-6 text-left">{employee.position}</td>
-                                <td className="py-3 px-6 text-left">
-                                    <button
-                                        className="bg-yellow-500 text-white px-4 py-2 mr-2 rounded hover:bg-yellow-600"
-                                        onClick={() => handleEdit(employee)}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                                        onClick={() => handleDelete(employee.id)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
+            <Helmet><title>Customer List Page</title></Helmet>
+            <div className="container mx-auto py-8 px-4">
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0">
+                    <button
+                        className="bg-indigo-500 text-white font-bold py-2 px-4 rounded-md w-full sm:w-auto"
+                        onClick={() => window.history.back()}
+                    >
+                        Kembali
+                    </button>
+                    <button
+                        className="bg-green-500 text-white font-bold py-2 px-4 rounded-md w-full sm:w-auto"
+                        onClick={handleCreate}
+                    >
+                        Tambah Pelanggan
+                    </button>
+                </div>
+
+                <div className="text-center mb-10">
+                    <h1 className="text-3xl sm:text-5xl font-bold text-blue-700 mb-4">List Daftar Pelanggan</h1>
+                    <div className="w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
+                </div>
+
+                <div className="overflow-x-auto">
+                    <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+                        <thead>
+                            <tr className="bg-gray-200 text-left">
+                                <th className="py-3 px-6 border-b-2">No</th>
+                                <th className="py-3 px-6 border-b-2">Nama</th>
+                                <th className="py-3 px-6 border-b-2">Email</th>
+                                <th className="py-3 px-6 border-b-2">Nomor Telepon</th>
+                                <th className="py-3 px-6 border-b-2">Alamat</th>
+                                <th className="py-3 px-6 border-b-2">Jabatan</th>
+                                <th className="py-3 px-6 border-b-2">Aksi</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {employees.map((employee, index) => (
+                                <tr key={employee.id} className="border-b hover:bg-gray-100">
+                                    <td className="py-3 px-6 text-left">{index + 1}</td>
+                                    <td className="py-3 px-6 text-left">{employee.name}</td>
+                                    <td className="py-3 px-6 text-left">{employee.email}</td>
+                                    <td className="py-3 px-6 text-left">{employee.phone}</td>
+                                    <td className="py-3 px-6 text-left">{employee.address}</td>
+                                    <td className="py-3 px-6 text-left">{employee.position}</td>
+                                    <td className="py-3 px-6 flex justify-center mt-3">
+                                        <button
+                                            className="bg-yellow-500 text-white px-4 py-2 mr-2 rounded hover:bg-yellow-600"
+                                            onClick={() => handleEdit(employee)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                            onClick={() => handleDelete(employee.id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

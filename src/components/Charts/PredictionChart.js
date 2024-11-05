@@ -43,10 +43,13 @@ const PredictionChart = () => {
   };
 
   return (
-    <div style={{width: '100%', height: '460px', padding: '30px', display: 'flex', flexDirection: 'column'}}>
-    <h2 className="text-xl font-bold text-center">Data Distribution</h2>
-    <Line data={data}/>
+    <div className="w-full h-[460px] p-4 flex flex-col">
+  <h2 className="text-xl font-bold text-center">Distribusi Data</h2>
+  <div className="flex-1 w-full">
+    <Line data={data} options={{ maintainAspectRatio: false }} />
   </div>
+</div>
+
   );
 };
 

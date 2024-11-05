@@ -8,7 +8,7 @@ const EmployeeChart = () => {
     const [employeeData, setEmployeeData] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/sales-performance')
+        axios.get('/api/sales-performance')
             .then(response => {
                 setEmployeeData(response.data);
             })

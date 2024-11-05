@@ -45,15 +45,11 @@ const BarChart = () => {
     fetchData();
   }, []);
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-  };
 
   return (
-    <div className="" style={{ width: '100%', height: '460px', padding: '30px', display: 'flex', flexDirection: 'column' }}>
-      <h2 className="text-xl font-bold text-center">Data Distribution</h2>
-      <Bar data={barChartData} options={options} />
+    <div className="w-full h-[460px] p-4 flex flex-col">
+      <h2 className="text-xl font-bold text-center">Distribusi Data</h2>
+      <Bar data={barChartData} options={{ maintainAspectRatio: false }} />
     </div>
   );
 };

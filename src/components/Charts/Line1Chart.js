@@ -28,7 +28,7 @@ const Line1Chart = () => {
     axios.get('/api/sales-performance')
     .then(response =>{
       setData(response.data)
-      console.log(data);
+      // console.log(data);
     })
     .catch(error =>{
       console.log("error fetching data",error);
@@ -37,20 +37,21 @@ const Line1Chart = () => {
 }, []);
 
   return (
-    <div style={{ width: '100%', height: '460px',marginLeft:'-30px', display: 'flex', flexDirection: 'column' }}>
-  <h2 className="text-xl font-bold text-center mb-4">Customer Growth</h2>
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={data} className='p-5'>
-        <Line type="natural" dataKey="f0" stroke="#4f46e5" />
-        <Line type="natural" dataKey="f1" stroke="#4f46e5" />
-        <Line type="natural" dataKey="f3" stroke="#4f46e5" />
-        <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="namaSA" tick={{ fontSize: 12 }} interval={0} angle={-50} />
-        <YAxis />
-        <Tooltip />
-      </LineChart>
-    </ResponsiveContainer>
-  </div>
+    <div className="w-full h-[460px] -ml-8 flex flex-col">
+  <h2 className="text-xl font-bold text-center mb-4">Perkembangan Performa Sales</h2>
+  <ResponsiveContainer width="100%" height="100%">
+    <LineChart data={data} className="p-5">
+      <Line type="natural" dataKey="f0" stroke="#4f46e5" />
+      <Line type="natural" dataKey="f1" stroke="#4f46e5" />
+      <Line type="natural" dataKey="f3" stroke="#4f46e5" />
+      <CartesianGrid stroke="#ccc" />
+      <XAxis dataKey="namaSA" tick={{ fontSize: 12 }} interval={0} angle={-50} />
+      <YAxis />
+      <Tooltip />
+    </LineChart>
+  </ResponsiveContainer>
+</div>
+
   );
 };
 
