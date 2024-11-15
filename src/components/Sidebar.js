@@ -1,118 +1,113 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { HomeIcon, UserGroupIcon, DocumentAddIcon, LogoutIcon } from '@heroicons/react/outline';
-import chart from '../img/chart.png';
 import { ChevronDoubleRightIcon, ChevronDoubleLeftIcon } from '@heroicons/react/outline';
+import chart from '../img/chart.png';
+const SidebarContext = React.createContext({});
 
-function Sidebar({ role, isOpen, toggleSidebar }) {
+export default function Sidebar({ role }) {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const username = localStorage.getItem('username');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    navigate('/'); // Arahkan kembali ke halaman login setelah logout
+    navigate('/');
+  };
+
+  const menuItems = {
+    admin: [
+      { to: '/admin', icon: <HomeIcon className="w-7 h-7" />, label: 'Admin Dashboard' },
+      { to: '/register', icon: <DocumentAddIcon className="w-7 h-7" />, label: 'Tambahkan User' },
+      { to: '/employee-list', icon: <UserGroupIcon className="w-7 h-7" />, label: 'Manage Employee' },
+      { to: '/customers-list-admin', icon: <UserGroupIcon className="w-7 h-7" />, label: 'Manage Customers' },
+      { to: '/sales-performance', icon: <DocumentAddIcon className="w-7 h-7" />, label: 'Sales Performance' },
+      { to: '/sales-funnel', icon: <DocumentAddIcon className="w-7 h-7" />, label: 'Sales Funnel' },
+    ],
+    employee: [
+      { to: '/employee', icon: <HomeIcon className="w-7 h-7" />, label: 'Employee Dashboard' },
+      { to: '/customers-list-employee', icon: <UserGroupIcon className="w-7 h-7" />, label: 'Manage Customers' },
+      { to: '/input-data-sales', icon: <DocumentAddIcon className="w-7 h-7" />, label: 'Input Data Sales' },
+    ],
   };
 
   return (
-    <div
-      className={`fixed inset-y-0 left-0 w-64 bg-gradient-to-b from-indigo-700 to-blue-400 text-white flex flex-col p-4 h-full transition-transform duration-300 ease-in-out shadow-lg z-50 ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
-    >
-      <div className="mb-6 flex items-center gap-3">
-        <img src={chart} alt="Logo" className="w-8 h-8 " />
-        <h2 className="text-2xl font-bold">Smart Dashboard</h2>
-      </div>
-      
-      {/* ROLE ADMIN */}
-      <ul className="space-y-4 flex-1">
-        {role === "admin" && (
-          <>
-            <li className="flex items-center space-x-2">
-              <HomeIcon className="w-5 h-5" />
-              <Link to="/admin" className="block p-2 rounded hover:bg-indigo-600">
-                Admin Dashboard
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <DocumentAddIcon className="w-5 h-5" />
-              <Link to="/register" className="block p-2 rounded hover:bg-indigo-600">
-                Tambahkan User
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <UserGroupIcon className="w-5 h-5" />
-              <Link to="/employee-list" className="block p-2 rounded hover:bg-indigo-600">
-                Manage Employee
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <UserGroupIcon className="w-5 h-5" />
-              <Link to="/customers-list-admin" className="block p-2 rounded hover:bg-indigo-600">
-                Manage Customers
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <UserGroupIcon className="w-5 h-5" />
-              <Link to="/sales-performance" className="block p-2 rounded hover:bg-indigo-600">
-                SA Performance
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <UserGroupIcon className="w-5 h-5" />
-              <Link to="/sales-funnel" className="block p-2 rounded hover:bg-indigo-600">
-                SA Funnel
-              </Link>
-            </li>
-          </>
-        )}
+    <aside className={`h-screen sticky top-0 transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}>
+      <nav className="h-full flex flex-col bg-white border-r shadow-sm">
+        <div className="flex items-center justify-between p-5">
+          {isOpen && <img src={chart} alt="Logo" className="w-10" />}
+          <p className={`text-2xl font-bold ml-2 ${isOpen ? '' : 'hidden'}`} >Indibiz Dashboard</p>
+          <button
+            className="p-1.5 rounded-full bg-gray-50 hover:bg-gray-100"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? (
+              <ChevronDoubleLeftIcon className="w-7 h-7" />
+            ) : (
+              <ChevronDoubleRightIcon className="w-7 h-7" />
+            )}
+          </button>
+        </div>
 
-        {/* ROLE EMPLOYEE */}
-        {role === "employee" && (
-          <>
-            <li className='text-sm text-gray-400'>
-              <span>Dashboard</span>
-            </li>
-            <li className="flex items-center space-x-2">
-              <HomeIcon className="w-5 h-5" />
-              <Link to="/employee" className="block p-2 rounded hover:bg-indigo-600">
-                Employee Dashboard
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <UserGroupIcon className="w-5 h-5" />
-              <Link to="/customers-list-employee" className="block p-2 rounded hover:bg-indigo-600">
-                Manage Customers
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <DocumentAddIcon className="w-5 h-5" />
-              <Link to="/input-data-sales" className="block p-2 rounded hover:bg-indigo-600">
-                Input data sales
-              </Link>
-            </li>
-          </>
-        )}
-      </ul>
+        <SidebarContext.Provider value={{ isOpen }}>
+          <ul className="space-y-4 flex-1 px-4">
+            {menuItems[role]?.map((item, index) => (
+              <SidebarItem key={index} {...item} />
+            ))}
+          </ul>
+        </SidebarContext.Provider>
 
-      {/* Tombol Toggle Sidebar */}
-      <button
-        onClick={toggleSidebar}
-        className="absolute top-1/2 right-[-40px] transform -translate-y-1/2 p-2 bg-indigo-700 rounded-full shadow-lg hover:bg-indigo-600 transition"
-        style={{ width: '60px', height: '60px' }}
-      >
-        {isOpen ? <ChevronDoubleLeftIcon className="w-6 h-6 mx-auto text-white" /> : <ChevronDoubleRightIcon className="w-6 h-6 mx-auto text-white" />}
-      </button>
+        <div className="border-t flex p-3 justify-center items-center">
+          <img
+            src={`https://ui-avatars.com/api/?name=${username}`}
+            alt="Avatar"
+            className="w-10 h-10 rounded-md"
+          />
+          {isOpen && (
+            <div className="flex-1 ml-3">
+              <h4 className="text-lg uppercase font-semibold">{username}</h4>
+              <span className="text-md text-gray-600">{role}</span>
+            </div>
+          )}
+        </div>
 
-      <button
-        onClick={handleLogout}
-        className="flex items-center space-x-2 bg-red-500 p-2 rounded hover:bg-red-600 transition duration-300 mt-4"
-      >
-        <LogoutIcon className="w-5 h-5" />
-        <span>Logout</span>
-      </button>
-    </div>
+        <button
+          onClick={handleLogout}
+          className={`relative flex items-center py-2 px-3 my-1
+        font-medium rounded-md cursor-pointer hover:bg-red-300 hover:text-white ${
+            isOpen ? 'mt-4 mx-3' : 'mt-2 items-center justify-center'
+          }`}
+        >
+          <LogoutIcon className="w-7 h-7" />
+          {isOpen && <span>Logout</span>}
+        </button>
+      </nav>
+    </aside>
   );
 }
 
-export default Sidebar;
+function SidebarItem({ to, icon, label }) {
+  const { isOpen } = useContext(SidebarContext);
+  const active = window.location.pathname === to;
+
+  return (
+    <li
+      className={`
+        relative flex items-center py-2 px-3 my-2
+        font-medium rounded-md cursor-pointer
+        transition-all duration-300 group
+        ${
+          active
+            ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+            : "hover:bg-indigo-50 text-gray-600"
+        }
+      `}
+    >
+      <Link to={to} className="flex items-center space-x-2">
+        {icon}
+        {isOpen && <span>{label}</span>}
+      </Link>
+    </li>
+  );
+}
