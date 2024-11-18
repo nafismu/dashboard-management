@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Helmet from 'react-helmet'
+import Sidebar from '../components/Sidebar';
 
 const SaPerformance = () => {
   const [data, setData] = useState([]);
@@ -10,6 +11,11 @@ const SaPerformance = () => {
   const [endDate, setEndDate] = useState('');
   const [sortConfig, setSortConfig] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOpen,setIsOpen] = useState(false);
+
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+    }
 
 
   useEffect(() => {
@@ -102,10 +108,11 @@ const SaPerformance = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Helmet><title>Sales Performance Page</title></Helmet>
+      <Sidebar role="admin" isOpen={isOpen} toggleSidebar={toggleSidebar} />
       <div className="container mx-auto px-4 py-8 justify-between">
-        <div className='flex gap-4 mb-8'>
+        {/* <div className='flex gap-4 mb-8'>
         <button className="
         bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
         onClick={() => window.history.back()}
@@ -113,7 +120,7 @@ const SaPerformance = () => {
           Back
         </button>
 
-        </div>
+        </div> */}
         <div className="ml-auto text-right sticky">
           <button
             onClick={() => setIsModalOpen(true)}

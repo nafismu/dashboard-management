@@ -55,7 +55,6 @@ function EmployeePage() {
     <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Helmet><title>Employee Dashboard Page</title></Helmet>
       <Sidebar role="employee" isOpen={isOpen} toggleSidebar={toggleSidebar} />
-      
       <div className={`flex-1 p-4 sm:p-6 transition-all duration-300 ${isOpen ? 'ml-64' : 'ml-0'}`}>
         {/* Header Section with Toggle Sidebar */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 bg-blue-500 text-white p-4 rounded shadow-md">

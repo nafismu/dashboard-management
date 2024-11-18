@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import {Helmet} from "react-helmet";
+import Sidebar from '../components/Sidebar';
 
 const EmployeeList = () => {
 
@@ -9,7 +10,12 @@ const EmployeeList = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [editEmployees, setEditEmployees] = useState(null);
-    const API_URL = '/api/employees';  // Sesuaikan dengan URL API backend Anda
+    const API_URL = '/api/employees'; // Sesuaikan dengan URL API backend Anda
+    const [isOpen,setIsOpen] = useState(false);
+
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+    }
 
     // Fetch all customers from the backend
     const fetchCustomers = async () => {
@@ -194,16 +200,17 @@ const EmployeeList = () => {
     }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <Sidebar role="admin" isOpen={isOpen} toggleSidebar={toggleSidebar} />
             <Helmet><title>Customer List Page</title></Helmet>
             <div className="container mx-auto py-8 px-4">
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0">
-                    <button
+                    {/* <button
                         className="bg-indigo-500 text-white font-bold py-2 px-4 rounded-md w-full sm:w-auto"
                         onClick={() => window.history.back()}
                     >
                         Kembali
-                    </button>
+                    </button> */}
                     <button
                         className="bg-green-500 text-white font-bold py-2 px-4 rounded-md w-full sm:w-auto"
                         onClick={handleCreate}

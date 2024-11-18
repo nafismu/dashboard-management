@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet'
+import Sidebar from '../components/Sidebar';
 
 const SaFunnel = () => {
   const [data, setData] = useState([]);
@@ -8,6 +9,11 @@ const SaFunnel = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [sortConfig, setSortConfig] = useState(null);
+  const [isOpen,setIsOpen] = useState(false);
+
+  const toggleSidebar = () => { 
+      setIsOpen(!isOpen);
+  }
 
   useEffect(() => {
     fetch('/api/sales-performance')
@@ -69,14 +75,15 @@ const SaFunnel = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <Sidebar role="admin" isOpen={isOpen} toggleSidebar={toggleSidebar} />
       <Helmet><title>Sales Funnel Page</title></Helmet>
       <div className="container mx-auto px-4 py-8">
-        <button className="
+        {/* <button className="
         bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
         onClick={() => window.history.back()}
         >
-          Back</button>
+          Back</button> */}
         {/* Header Section */}
         <div className="text-center mb-10">
           <h1 className="text-5xl font-bold text-blue-700 mb-4">SA Funnel Telda Kudus</h1>

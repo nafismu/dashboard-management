@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
+import Sidebar from '../components/Sidebar';
 
 const CustomersInput = () => {
+  const [isOpen,setIsOpen] = useState(false);
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
   // Mengelompokkan semua input dalam satu state object
   const [customer, setCustomer] = useState({
     name: '',
@@ -117,7 +122,7 @@ const CustomersInput = () => {
     <div className="flex items-center justify-center min-h-screen bg-indigo-300">
       <div className="bg-white p-8 rounded shadow-md w-full" style={{ width: '100rem' }}>
         <h1 className="text-2xl font-bold mb-6">Input Customer Data</h1>
-        
+        <Sidebar role="admin" isOpen={isOpen} toggleSidebar={toggleSidebar} />
         {/* Form Input Manual */}
         <form onSubmit={handleSubmit} method='POST'>
           <div className="mb-4">

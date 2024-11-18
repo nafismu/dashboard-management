@@ -3,12 +3,17 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import Helmet from 'react-helmet';
 import { ShieldCheckIcon } from '@heroicons/react/outline';
+import Sidebar from '../components/Sidebar';
 
 const CustomersList = () => {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [editCustomer, setEditCustomer] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+    };
     const API_URL = '/api/customers';
 
     useEffect(() => {
@@ -201,16 +206,17 @@ const CustomersList = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
+            <Sidebar role="admin" isOpen={isOpen} toggleSidebar={toggleSidebar} />
             <Helmet><title>Customer List Page</title></Helmet>
             <div className="container mx-auto py-8 px-4">
                 <div className="flex flex-col md:flex-row md:justify-between mb-4 space-y-2 md:space-y-0">
-                    <button
+                    {/* <button
                         className="bg-indigo-500 text-white font-bold py-2 px-4 rounded-md w-full md:w-auto"
                         onClick={() => window.history.back()}
                     >
                         Kembali
-                    </button>
+                    </button> */}
                     <button
                         className="bg-green-500 text-white font-bold py-2 px-4 rounded-md w-full md:w-auto"
                         onClick={handleCreate}
