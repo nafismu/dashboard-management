@@ -3,6 +3,7 @@ import axios from 'axios';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Swal from 'sweetalert2';
 import Helmet from 'react-helmet';
+import Sidebar from './Sidebar';
 
 const Register = () => {
   const [username, setUsername] = useState('');

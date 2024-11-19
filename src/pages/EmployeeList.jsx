@@ -203,14 +203,8 @@ const EmployeeList = () => {
     <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <Sidebar role="admin" isOpen={isOpen} toggleSidebar={toggleSidebar} />
             <Helmet><title>Customer List Page</title></Helmet>
-            <div className="container mx-auto py-8 px-4">
+            <div className="container my-12 mx-auto py-8 px-4">
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0">
-                    {/* <button
-                        className="bg-indigo-500 text-white font-bold py-2 px-4 rounded-md w-full sm:w-auto"
-                        onClick={() => window.history.back()}
-                    >
-                        Kembali
-                    </button> */}
                     <button
                         className="bg-green-500 text-white font-bold py-2 px-4 rounded-md w-full sm:w-auto"
                         onClick={handleCreate}
