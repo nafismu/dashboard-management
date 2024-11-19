@@ -58,7 +58,7 @@ export default function Sidebar({ role }) {
     <aside className={`h-screen sticky top-0 transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}>
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="flex items-center justify-between p-5">
-          {isOpen && <img src={chart} alt="Logo" className="w-10" />}
+          {/* {isOpen && <img src={chart} alt="Logo" className="w-10" />} */}
           <p className={`text-2xl font-bold ml-2 ${isOpen ? '' : 'hidden'}`}>Indibiz Dashboard</p>
           <button
             className="p-1.5 rounded-full bg-gray-50 hover:bg-gray-100"
