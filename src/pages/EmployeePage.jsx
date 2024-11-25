@@ -17,7 +17,7 @@ function EmployeePage() {
     fetchCustomerCount();
     fetchNewCustomers();
     fetchReturningCustomers();
-  });
+  },[]);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);

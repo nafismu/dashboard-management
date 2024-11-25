@@ -7,18 +7,16 @@ const MotivationalCard = () => {
   useEffect(() => {
     const fetchMotivation = async () => {
       try {
-        const response = await axios.get(
-          '/api/motivation',
-        );
-        setMotivationText(response.data[(Math.random() * response.data.length) | 0]);
+        const response = await axios.get('/api/motivation');
+        const randomIndex = Math.floor(Math.random() * response.data.length);
+        setMotivationText(response.data[randomIndex]);
       } catch (error) {
         console.error("Error fetching motivational text:", error);
         setMotivationText("Tetap semangat, Anda hebat!");
       }
     };
-
     fetchMotivation();
-  });
+  }, []); // Dependency array kosong
 
   return (
     <div className="bg-blue-400 text-white p-4 rounded-lg shadow-lg">

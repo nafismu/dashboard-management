@@ -214,7 +214,7 @@ const EmployeeList = () => {
                 </div>
 
                 <div className="text-center mb-10">
-                    <h1 className="text-3xl sm:text-5xl font-bold text-blue-700 mb-4">List Daftar Pelanggan</h1>
+                    <h1 className="text-3xl sm:text-5xl font-bold text-blue-700 mb-4">List Daftar Pegawai</h1>
                     <div className="w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
                 </div>
 
