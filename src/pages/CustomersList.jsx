@@ -11,6 +11,7 @@ const CustomersList = () => {
     const [error, setError] = useState(null);
     const [editCustomer, setEditCustomer] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const role = localStorage.getItem('role');
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
@@ -207,7 +208,7 @@ const CustomersList = () => {
 
     return (
         <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
-            <Sidebar role="admin" isOpen={isOpen} toggleSidebar={toggleSidebar} />
+            <Sidebar role={role} isOpen={isOpen} toggleSidebar={toggleSidebar} />
             <Helmet><title>Customer List Page</title></Helmet>
             <div className="container my-12 mx-auto py-8 px-4">
                 <div className="flex flex-col md:flex-row md:justify-between mb-4 space-y-2 md:space-y-0">

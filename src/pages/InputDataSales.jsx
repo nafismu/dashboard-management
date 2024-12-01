@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import Sidebar from '../components/Sidebar';
 
 const InputDataSales = () => {
     const [salesData, setSalesData] = useState([{ name: '', email: '', stage: '', comments: '' }]);
-
+    const [isOpen, setIsOpen] = useState(false);
+    const role = localStorage.getItem('role');
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+    };
     const handleInputChange = (index, event) => {
         const { name, value } = event.target;
         const newSalesData = [...salesData];
@@ -26,16 +31,9 @@ const InputDataSales = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
+            <Sidebar role={role} isOpen={isOpen} toggleSidebar={toggleSidebar} />
             <div className="container mx-auto px-4 py-8">
-                <div className="flex justify-between items-center mb-8">
-                    <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-                        onClick={() => window.history.back()}
-                    >
-                        Back
-                    </button>
-                </div>
                 <div className="text-center mb-10">
                     <h1 className="text-3xl md:text-5xl font-bold text-blue-700 mb-4">Input Data Sales</h1>
                     <div className="w-16 md:w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
