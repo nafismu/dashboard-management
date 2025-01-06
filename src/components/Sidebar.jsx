@@ -2,7 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { HomeIcon, UserGroupIcon, DocumentAddIcon, LogoutIcon } from '@heroicons/react/outline';
 import { ChevronDoubleRightIcon, ChevronDoubleLeftIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import chart from '../img/chart.png';
+// import chart from '../img/chart.png';
+import Swal from 'sweetalert2';
 const SidebarContext = React.createContext({});
 
 export default function Sidebar({ role }) {
@@ -12,9 +13,21 @@ export default function Sidebar({ role }) {
   const username = localStorage.getItem('username');
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/');
+    Swal.fire({
+      title: 'Are you sure to logout ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#279e21',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, logout',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {if(result.isConfirmed) {
+      localStorage.removeItem('token', 'username','role');
+      navigate('/');
+    }else{
+      return false
+    }
+    });
   };
 
   useEffect(() => {
