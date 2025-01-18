@@ -3,6 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import {Helmet} from "react-helmet";
 import Sidebar from '../components/Sidebar';
+import Header from '../components/Header';
 
 const EmployeeList = () => {
 
@@ -203,7 +204,7 @@ const EmployeeList = () => {
     <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <Sidebar role="admin" isOpen={isOpen} toggleSidebar={toggleSidebar} />
             <Helmet><title>Customer List Page</title></Helmet>
-            <div className="container my-12 mx-auto py-8 px-4">
+            <div className=" flex-1 container mx-auto py-8 px-4">
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0">
                     <button
                         className="bg-green-500 text-white font-bold py-2 px-4 rounded-md w-full sm:w-auto"
@@ -212,7 +213,6 @@ const EmployeeList = () => {
                         Tambah Pelanggan
                     </button>
                 </div>
-
                 <div className="text-center mb-10">
                     <h1 className="text-3xl sm:text-5xl font-bold text-blue-700 mb-4">List Daftar Pegawai</h1>
                     <div className="w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
@@ -223,7 +223,7 @@ const EmployeeList = () => {
                         <thead>
                             <tr className="bg-gray-200 text-left">
                                 <th className="py-3 px-6 border-b-2">No</th>
-                                <th className="py-3 px-6 border-b-2">Nama</th>
+                                <th className="py-3 px-6 border-b-2">Id Pegawai</th>
                                 <th className="py-3 px-6 border-b-2">Email</th>
                                 <th className="py-3 px-6 border-b-2">Nomor Telepon</th>
                                 <th className="py-3 px-6 border-b-2">Alamat</th>
@@ -235,7 +235,7 @@ const EmployeeList = () => {
                             {employees.map((employee, index) => (
                                 <tr key={employee.id} className="border-b hover:bg-gray-100">
                                     <td className="py-3 px-6 text-left">{index + 1}</td>
-                                    <td className="py-3 px-6 text-left">{employee.name}</td>
+                                    <td className="py-3 px-6 text-left">{employee.employee_id}</td>
                                     <td className="py-3 px-6 text-left">{employee.email}</td>
                                     <td className="py-3 px-6 text-left">{employee.phone}</td>
                                     <td className="py-3 px-6 text-left">{employee.address}</td>
@@ -258,9 +258,9 @@ const EmployeeList = () => {
                             ))}
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
-        </div>
 );
 };
 

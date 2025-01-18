@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { HomeIcon, UserGroupIcon, DocumentAddIcon, LogoutIcon } from '@heroicons/react/outline';
+import { HomeIcon, UserGroupIcon, DocumentAddIcon, LogoutIcon, PencilIcon } from '@heroicons/react/outline';
 import { ChevronDoubleRightIcon, ChevronDoubleLeftIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 // import chart from '../img/chart.png';
 import Swal from 'sweetalert2';
@@ -50,6 +50,8 @@ export default function Sidebar({ role }) {
       { to: '/employee', icon: <HomeIcon className="w-7 h-7" />, label: 'Employee Dashboard' },
       { to: '/customers-list-employee', icon: <UserGroupIcon className="w-7 h-7" />, label: 'Manage Customers' },
       { to: '/input-data-sales', icon: <DocumentAddIcon className="w-7 h-7" />, label: 'Input Data Sales' },
+      { to: '/attendance-sales', icon: <PencilIcon className="w-7 h-7" />, label: 'Attendances Sales' }, 
+      { to: '/capture-face', icon: <PencilIcon className="w-7 h-7" />, label: 'Capture Face' } 
     ],
   };
 

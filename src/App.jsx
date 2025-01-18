@@ -1,50 +1,60 @@
-// App.js
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from './components/Login';
-import Register from './components/Register';
-import AdminRoute from './route/AdminRoute';
-import EmployeeRoute from './route/EmployeeRoute';
-import AdminPage from './pages/AdminPage';
-import EmployeePage from './pages/EmployeePage';
-import CustomersList from './pages/CustomersList';
-import SaPerformance from './pages/SaPerformance';
-import EmployeeList from './pages/EmployeeList';
-import SaFunnel from './pages/SaFunnel';
-import EmployeeChart from './components/EmployeeChart';
-import Unauthorized from './pages/Unauthorized';
-import InputDataSales from './pages/InputDataSales';
+
+// Gunakan React.lazy untuk impor komponen secara dinamis
+const LoginPage = React.lazy(() => import('./components/Login'));
+const Register = React.lazy(() => import('./components/Register'));
+const AdminRoute = React.lazy(() => import('./route/AdminRoute'));
+const EmployeeRoute = React.lazy(() => import('./route/EmployeeRoute'));
+const AdminPage = React.lazy(() => import('./pages/AdminPage'));
+const EmployeePage = React.lazy(() => import('./pages/EmployeePage'));
+const CustomersList = React.lazy(() => import('./pages/CustomersList'));
+const SaPerformance = React.lazy(() => import('./pages/SaPerformance'));
+const EmployeeList = React.lazy(() => import('./pages/EmployeeList'));
+const SaFunnel = React.lazy(() => import('./pages/SaFunnel'));
+const EmployeeChart = React.lazy(() => import('./components/EmployeeChart'));
+const Unauthorized = React.lazy(() => import('./pages/Unauthorized'));
+const InputDataSales = React.lazy(() => import('./pages/InputDataSales'));
+const AttendanceSales = React.lazy(() => import('./pages/AttendancePage'));
+const CaptureFace = React.lazy(() => import('./pages/CaptureFace'));
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Routes>
-          {/* Halaman login dan register dapat diakses tanpa login */}
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<Register />} />
+        {/* Suspense untuk menangani fallback loading sementara komponen dimuat */}
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            {/* Halaman login dan register dapat diakses tanpa login */}
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<Register />} />
 
-          {/* Protected routes untuk admin */}
-          <Route element={<AdminRoute />}>
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/sales-performance" element={<SaPerformance />} />
-            <Route path="/sales-funnel" element={<SaFunnel />} />
-            <Route path="/customers-list-admin" element={<CustomersList />} />
-            <Route path="/employee-list" element={<EmployeeList/>} />
-          </Route>
+            {/* Protected routes untuk admin */}
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/sales-performance" element={<SaPerformance />} />
+              <Route path="/sales-funnel" element={<SaFunnel />} />
+              <Route path="/customers-list-admin" element={<CustomersList/>} />
+              <Route path="/employee-list" element={<EmployeeList />} />
+            </Route>
 
-          {/* Protected routes untuk employee */}
-          <Route element={<EmployeeRoute />}>
-            <Route path="/employee" element={<EmployeePage />} />
-            <Route path="/customers-list-employee" element={<CustomersList />}/>
-            <Route path="/input-data-sales" element={<InputDataSales/>}/>
-          </Route>
-          <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="/EmployeeChart" element={<EmployeeChart />} />
-        </Routes>
+            {/* Protected routes untuk employee */}
+            <Route element={<EmployeeRoute />}>
+              <Route path="/employee" element={<EmployeePage />} />
+              <Route path="/customers-list-employee" element={<CustomersList />} />
+              <Route path="/input-data-sales" element={<InputDataSales />} />
+              <Route path="/attendance-sales" element={<AttendanceSales />} />
+              <Route path="/capture-face" element={<CaptureFace />} />
+            </Route>
+            
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/EmployeeChart" element={<EmployeeChart />} />
+          </Routes>
+        </Suspense>
       </div>
     </Router>
   );
 }
+
 export default App;

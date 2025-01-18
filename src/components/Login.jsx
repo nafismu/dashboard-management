@@ -32,6 +32,7 @@ const Login = () => {
       localStorage.setItem('token', access_token);
       localStorage.setItem('role', role);
       localStorage.setItem('username', username);
+      
   
       // SweetAlert2 untuk menampilkan notifikasi login sukses
       Swal.fire({

@@ -3,32 +3,41 @@ import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 
+// Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
 
 const LineChart = () => {
   const [data, setData] = useState([]);
   const [predictions, setPredictions] = useState([]);
 
+  // Fetch data on component mount
   useEffect(() => {
-    axios.get('/api/sales-performance')
-      .then(response => {
-        setData(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching sales performance data:", error);
-      });
+    const fetchData = async () => {
+      try {
+        const salesResponse = await axios.get('/api/sales-performance');
+        setData(salesResponse.data);
 
-    axios.get('/api/sales-performance/prediction')
-      .then(response => {
-        setPredictions(response.data.predictions);
-      })
-      .catch(error => {
-        console.error("Error fetching predictions:", error);
-      });
+        const predictionResponse = await axios.get('/api/sales-performance/prediction');
+        setPredictions(predictionResponse.data.predictions);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
+  const threshold = 100; // Performansi minimal
+  const filteredData = data
+            .filter((item) => item.mitra > threshold) // Tampilkan jika performa di atas ambang tertentu
+            .sort((a, b) => b.mitra - a.mitra) // Urutkan performa dari besar ke kecil
+            .slice(0, 5); // Ambil 5 data teratas
+  // Prepare chart data
   const lineChartData = {
-    labels: data.map((item, index) => item.mitra).concat(predictions.map((_, index) => `Prediction ${index + 1}`)),
+    labels: [
+      ...data.map(item => item.mitra), // Data labels from API
+      ...predictions.map((_, index) => `Prediction ${index + 1}`) // Labels for predictions
+    ],
     datasets: [
       {
         label: 'SPH',
@@ -40,16 +49,17 @@ const LineChart = () => {
       },
       {
         label: 'Predicted SPH',
-        data: [...Array(data.length).fill(null), ...predictions],
+        data: [...Array(data.length).fill(null), ...predictions], // Align predictions with data
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
         borderColor: 'rgba(255, 99, 132, 1)',
-        borderDash: [5, 5],
+        borderDash: [5, 5], // Dashed line for predictions
         borderWidth: 2,
         fill: false,
       }
     ]
   };
 
+  // Chart options
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -65,11 +75,10 @@ const LineChart = () => {
           },
         },
         grid: {
-          display: true,
-          color: 'rgba(200, 200, 200, 0.3)',
+          color: 'rgba(200, 200, 200, 0.3)', // Light gray gridlines
         },
         ticks: {
-          color: '#333',
+          color: '#333', // Axis tick color
         },
       },
       x: {
@@ -83,19 +92,40 @@ const LineChart = () => {
           },
         },
         grid: {
-          display: false,
+          display: false, // Disable x-axis gridlines
         },
         ticks: {
-          color: '#333',
+          color: '#333', // Axis tick color
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'top', // Position legend at the top
+        labels: {
+          color: '#333', // Legend text color
         },
       },
     },
   };
 
   return (
-    <div className="justify-center items-center" style={{ width: '100%', height: '460px', padding: '30px', display: 'flex', flexDirection: 'column' }}>
-      <h2 className="text-xl font-bold text-center">Prediksi sales dengan Regresi Linear</h2>
-      <Line data={lineChartData} options={options} />
+    <div
+      className="justify-center items-center"
+      style={{
+        width: '100%',
+        height: '460px',
+        padding: '30px',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <h2 className="text-xl font-bold text-center mb-4">Prediksi Sales dengan Regresi Linear</h2>
+      {data.length > 0 || predictions.length > 0 ? (
+        <Line data={lineChartData} options={options} />
+      ) : (
+        <p className="text-gray-500">Loading data...</p>
+      )}
     </div>
   );
 };

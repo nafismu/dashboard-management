@@ -4,54 +4,51 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContai
 import axios from 'axios';
 
 const Line1Chart = () => {
-  const [line1ChartData, setLine1ChartData] = useState([]);
-  const [data,setData] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     // Mengambil data dari backend Flask
-    //     const response = await axios.get('http://127.0.0.1:5000/customer-growth-data');
+    // Fetch data from the API
+    axios
+      .get('/api/sales-performance')
+      .then((response) => {
+        setData(response.data); // Update state with fetched data
         
-    //     const { labels, growth } = response.data;
-        
-    //     // Menggabungkan labels dan growth menjadi format data yang digunakan oleh recharts
-    //     const formattedData = labels.map((label, index) => ({
-    //       name: label,
-    //       customers: growth[index],
-    //     }));
-    //     setLine1ChartData(formattedData);
-    //   } catch (error) {
-    //     console.error('Error fetching customer growth data:', error);
-    //   }
-    // };
-    axios.get('/api/sales-performance')
-    .then(response =>{
-      setData(response.data)
-      // console.log(data);
-    })
-    .catch(error =>{
-      console.log("error fetching data",error);
-    })
-    // fetchData();
-}, []);
 
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error); // Log any errors
+      });
+  }, []);
+  const threshold = 5; // Performansi minimal
+  const filteredData = data
+            .filter((item) => item.f0 > threshold) // Tampilkan jika performa di atas ambang tertentu
+            .sort((a, b) => b.f0 - a.f0) // Urutkan performa dari besar ke kecil
+            .slice(0, 5); // Ambil 5 data teratas
   return (
     <div className="w-full h-[460px] -ml-8 flex flex-col">
-  <h2 className="text-xl font-bold text-center mb-4">Perkembangan Performa Sales</h2>
-  <ResponsiveContainer width="100%" height="100%">
-    <LineChart data={data} className="p-5">
-      <Line type="natural" dataKey="f0" stroke="#4f46e5" />
-      <Line type="natural" dataKey="f1" stroke="#4f46e5" />
-      <Line type="natural" dataKey="f3" stroke="#4f46e5" />
-      <CartesianGrid stroke="#ccc" />
-      <XAxis dataKey="namaSA" tick={{ fontSize: 12 }} interval={0} angle={-50} />
-      <YAxis />
-      <Tooltip />
-    </LineChart>
-  </ResponsiveContainer>
-</div>
-
+      <h2 className="text-xl font-bold text-center">Perkembangan Performa Sales</h2>
+      <h2 className="text-xl font-bold text-center">Dari F0 - F3</h2>
+      <ResponsiveContainer width="100%" height="100%">
+        {filteredData.length > 0 ? ( // Conditional rendering if data is not empty
+          <LineChart data={filteredData} className="p-5">
+            <Line type="monotone" dataKey="f0" stroke="#4f46e5" name="Lead (F0)"/>
+            <Line type="monotone" dataKey="f1" stroke="#4ed204" name="Opportunity (F1)" />
+            <Line type="monotone" dataKey="f2" stroke="#ff2200" name="Proposal (F2)" />
+            <Line type="monotone" dataKey="f3" stroke="#ffa800" name="Bidding (F3)" />
+            <Line type="monotone" dataKey="tanggal" stroke="#8884d8" name="Tanggal"/>
+            {/* <Line type="monotone" dataKey="f0" stroke="#4f46e5" /> */}
+            <CartesianGrid stroke="#ccc" />
+            <XAxis dataKey="namaSA" tick={{ fontSize: 12 }} interval={0} angle={0} />
+            <YAxis />
+            <Tooltip />
+          </LineChart>
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-gray-500">Loading data or no data available...</p>
+          </div>
+        )}
+      </ResponsiveContainer>
+    </div>
   );
 };
 

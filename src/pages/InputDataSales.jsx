@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const InputDataSales = () => {
-    const [salesData, setSalesData] = useState([{ name: '', email: '', stage: '', comments: '' }]);
+    const [salesData, setSalesData] = useState([{name: '', email: '', stage: '', comments: '' }]);
+    const [databaseData, setDatabaseData] = useState([]); // State untuk data dari database
     const [isOpen, setIsOpen] = useState(false);
     const role = localStorage.getItem('role');
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
+    const toggleSidebar = () => setIsOpen(!isOpen);
+
     const handleInputChange = (index, event) => {
         const { name, value } = event.target;
         const newSalesData = [...salesData];
@@ -15,20 +17,61 @@ const InputDataSales = () => {
         setSalesData(newSalesData);
     };
 
-    const handleAddRow = () => {
-        setSalesData([...salesData, { name: '', email: '', stage: '', comments: '' }]);
+    // const handleAddRow = () => {
+    //     setSalesData([...salesData, { name: '', email: '', stage: '', comments: '' }]);
+    // };
+
+    // const handleRemoveRow = (index) => {
+    //     const newSalesData = salesData.filter((_, i) => i !== index);
+    //     setSalesData(newSalesData);
+    // };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault(); // Prevents page reload on form submission
+        try {
+            // Sending data to the backend API using Axios
+            const response = await axios.post('/api/sales-input', salesData, {
+                headers: { 'Content-Type': 'application/json' },
+            });
+            
+            if (response.status === 201 || response.status === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Data Berhasil disimpan!',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                setSalesData([{ name: '', email: '', stage: '', comments: '' }]); // Clear form
+                fetchDatabaseData(); // Refresh table with updated data
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Data gagal disimpan!',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        } catch (error) {
+            console.error("Error submitting data:", error);
+            alert("An error occurred while saving the data.");
+        }
+    };
+    
+
+    const fetchDatabaseData = async () => {
+        try {
+            const response = await axios.get('/api/sales-input');
+            setDatabaseData(response.data); // Simpan data dari database ke state
+        } catch (error) {
+            console.error("Error saat mengambil data dari database:", error);
+        }
     };
 
-    const handleRemoveRow = (index) => {
-        const newSalesData = salesData.filter((_, i) => i !== index);
-        setSalesData(newSalesData);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Lakukan pengiriman data ke backend
-        console.log("Sales Data:", salesData);
-    };
+    useEffect(() => {
+        fetchDatabaseData();
+    }, []);
 
     return (
         <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -47,7 +90,6 @@ const InputDataSales = () => {
                                     <th className="p-2 border">Email</th>
                                     <th className="p-2 border">Tahap</th>
                                     <th className="p-2 border">Komentar</th>
-                                    <th className="p-2 border">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,28 +141,12 @@ const InputDataSales = () => {
                                                 className="border w-full p-1 text-black"
                                             />
                                         </td>
-                                        <td className="p-2 border">
-                                            <button
-                                                type="button"
-                                                onClick={() => handleRemoveRow(index)}
-                                                className="bg-red-500 text-white px-2 md:px-4 py-1 md:py-2 rounded-lg hover:bg-red-600 transition-colors"
-                                            >
-                                                Hapus
-                                            </button>
-                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
                     <div className="mt-4 flex flex-col md:flex-row items-center gap-2">
-                        <button
-                            type="button"
-                            onClick={handleAddRow}
-                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full md:w-auto"
-                        >
-                            Tambah Baris
-                        </button>
                         <button
                             type="submit"
                             className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors w-full md:w-auto"
@@ -129,6 +155,31 @@ const InputDataSales = () => {
                         </button>
                     </div>
                 </form>
+                <div className="mt-10">
+                    <h2 className="text-2xl md:text-3xl font-bold text-blue-700 mb-4">Data Sales yang Tersimpan</h2>
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full border bg-light  rounded-lg overflow-hidden">
+                            <thead>
+                                <tr className="bg-blue-500 text-sm md:text-base text-white">
+                                    <th className="p-2 border">Nama</th>
+                                    <th className="p-2 border">Email</th>
+                                    <th className="p-2 border">Tahap</th>
+                                    <th className="p-2 border">Komentar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {databaseData.map((row, index) => (
+                                    <tr key={index} className="text-sm md:text-base">
+                                        <td className="p-2 border">{row.name}</td>
+                                        <td className="p-2 border">{row.email}</td>
+                                        <td className="p-2 border">{row.stage}</td>
+                                        <td className="p-2 border">{row.comments}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     );

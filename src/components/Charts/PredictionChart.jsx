@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
 
 const PredictionChart = () => {
   const [salesData, setSalesData] = useState([]);
   const [customerData, setCustomerData] = useState([]);
-  const [months, setMonths] = useState(['June', 'July', 'August']); // Contoh bulan prediksi
+  const [months, setMonths] = useState([]);
 
   useEffect(() => {
     const fetchPredictions = async () => {
       try {
-        const response = await axios.get('/api/predict?months=3');
-        setSalesData(response.data.sales);
-        setCustomerData(response.data.customers);
+        const response = await axios.get('/api/predict', { // Prediksi untuk 3 bulan
+        });
+        setSalesData(response.data.sales_predictions);
+        // setCustomerData(response.data.customers);
+        setMonths(['June', 'July', 'August']); // 
       } catch (error) {
         console.error('Error fetching prediction data:', error);
       }
@@ -44,12 +45,12 @@ const PredictionChart = () => {
 
   return (
     <div className="w-full h-[460px] p-4 flex flex-col">
-  <h2 className="text-xl font-bold text-center">Distribusi Data</h2>
-  <div className="flex-1 w-full">
-    <Line data={data} options={{ maintainAspectRatio: false }} />
-  </div>
-</div>
-
+      <h2 className="text-xl font-bold text-center">hasil prediksi untuk  3 bulan dari F4_Negotiation </h2>
+      <div className="flex-1 w-full">
+        <p>{salesData.slice(0, 1)}</p>
+        {/* <Line data={data} options={{ maintainAspectRatio: false }} /> */}
+      </div>
+    </div>
   );
 };
 

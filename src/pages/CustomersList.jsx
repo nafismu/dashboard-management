@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Helmet from 'react-helmet';
-import { ShieldCheckIcon } from '@heroicons/react/outline';
 import Sidebar from '../components/Sidebar';
 
 const CustomersList = () => {
