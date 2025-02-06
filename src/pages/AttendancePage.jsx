@@ -1,151 +1,139 @@
-import React, { useRef, useState } from "react";
-import Webcam from "react-webcam";
-import axios from "axios";
-import Swal from "sweetalert2";
-import WorkLocation from "../components/Attendance/WorkLocation";
-import ShiftInfo from "../components/Attendance/ShiftInfo";
-import CheckInOut from "../components/Attendance/CheckinOut";
-import ActivityInput from "../components/Attendance/ActivityInput";
-import HealthStatus from "../components/Attendance/HealthStatus";
+import React, { useState, useRef } from 'react';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
-const FaceVerification = ({ onVerificationComplete }) => {
-  const webcamRef = useRef(null);
-  const [showCamera, setShowCamera] = useState(false);
-  const [verifying, setVerifying] = useState(false);
+const FaceRecognition = () => {
+  const [image, setImage] = useState(null);
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const username = localStorage.getItem('username');
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
 
-  const videoConstraints = {
-    width: 720,
-    height: 480,
-    facingMode: "user",
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      videoRef.current.srcObject = stream;
+      streamRef.current = stream;
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Tidak dapat mengakses kamera',
+      });
+    }
   };
 
-  const captureAndVerify = async () => {
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  const captureImage = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
+    const imageData = canvas.toDataURL('image/jpeg');
+    setImage(imageData);
+    stopCamera();
+  };
+
+  const submitAttendance = async () => {
+    if (!image) return;
+
+    setLoading(true);
     try {
-      setVerifying(true);
-
-      const imageSrc = webcamRef.current.getScreenshot();
-      const blob = await fetch(imageSrc).then((res) => res.blob());
-
       const formData = new FormData();
-      formData.append("image", blob, "face.jpg");
+      formData.append('image', image);
+      formData.append('name', username);
 
-      const response = await axios.post("/api/attendance-process/verify-face", formData);
+      const response = await axios.post('/api/attendance-process/verify-face', formData);
 
-      if (response.data.success) {
+      const data = response.data;
+      setResult(data);
+      console.dir(data);
+      // console.dir(data.attendance.name);
+      if (data.success) {
+        const date = data.attendance.timestamp;
+        const name = data.user.name;
         Swal.fire({
-          icon: "success",
-          title: "Verifikasi Berhasil",
-          text: "Wajah berhasil diverifikasi!",
+          icon: 'success',
+          title: 'Berhasil',
+          text: `Absensi berhasil: ${name} pada ${date}`,
         });
-        onVerificationComplete(true, response.data);
-        setShowCamera(false);
       } else {
         Swal.fire({
-          icon: "error",
-          title: "Verifikasi Gagal",
-          text: response.data.message || "Wajah tidak dikenali. Coba lagi.",
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Gagal melakukan absensi wajah',
         });
-        onVerificationComplete(false);
       }
-    } catch (error) {
+    } catch (err) {
       Swal.fire({
-        icon: "error",
-        title: "Kesalahan",
-        text: error.response?.data?.message || "Terjadi kesalahan saat verifikasi.",
+        icon: 'error',
+        title: 'Error',
+        text: 'Gagal mengirim data',
       });
-      onVerificationComplete(false);
     } finally {
-      setVerifying(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="relative">
-      {showCamera ? (
-        <div className="bg-gray-800 rounded-lg p-4">
-          <div className="relative">
+    <div className="w-full max-w-lg mx-auto p-6 bg-white shadow-xl rounded-lg text-center">
+      <h1 className="text-2xl font-bold text-gray-800 mb-4">Sistem Absensi Face Recognition</h1>
+      <div className="relative w-full h-64 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+        {!image ? (
+          <video ref={videoRef} autoPlay className="w-full h-full object-cover" />
+        ) : (
+          <img src={image} alt="Captured" className="w-full h-full object-cover" />
+        )}
+      </div>
+      <div className="mt-4 flex flex-col gap-3">
+        {!image ? (
+          <>
             <button
-              onClick={() => setShowCamera(false)}
-              className="absolute top-2 right-2 z-10 bg-red-500 text-white p-1 rounded-full"
+              onClick={startCamera}
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition"
             >
-              &#10006;
+              📷 Buka Kamera
             </button>
-            <Webcam
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={videoConstraints}
-              className="rounded-lg w-full"
-            />
-          </div>
-          <div className="mt-4 flex justify-center">
             <button
-              onClick={captureAndVerify}
-              disabled={verifying}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:opacity-50"
+              onClick={captureImage}
+              className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition"
             >
-              {verifying ? "Memverifikasi..." : "Ambil Foto"}
+              Ambil Foto
             </button>
-          </div>
-        </div>
-      ) : (
-        <button
-          onClick={() => setShowCamera(true)}
-          className="flex items-center justify-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg w-full"
-        >
-          Verifikasi Wajah
-        </button>
-      )}
-    </div>
-  );
-};
-
-const AttendancePage = () => {
-  const [verificationStatus, setVerificationStatus] = useState({
-    verified: false,
-    data: null,
-  });
-
-  const handleVerificationComplete = (success, data) => {
-    setVerificationStatus({
-      verified: success,
-      data: data,
-    });
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
-      <div className="flex flex-col lg:flex-row gap-4">
-        {/* Absensi Harian Section */}
-        <div className="flex flex-col bg-white shadow-md rounded-lg p-4 sm:p-6 lg:w-2/3">
-          <h1 className="text-xl sm:text-2xl font-bold mb-4">Absensi Harian</h1>
-          <HealthStatus />
-          <WorkLocation />
-          <ActivityInput />
-          <div className="flex justify-between items-start mt-4">
-            <ShiftInfo />
-          </div>
-        </div>
-
-        {/* Check In/Out Section */}
-        <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 lg:w-1/3">
-          <div className="mb-4">
-            <FaceVerification onVerificationComplete={handleVerificationComplete} />
-            {verificationStatus.verified &&
-              Swal.fire({
-                icon: "success",
-                title: "Verifikasi Berhasil",
-                text: "Silakan lakukan check in/out",
-              })}
-          </div>
-          <CheckInOut
-            disabled={!verificationStatus.verified}
-            verificationData={verificationStatus.data}
-          />
-        </div>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => {
+                setImage(null);
+                setResult(null);
+                startCamera();
+              }}
+              className="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600 transition"
+            >
+              Ambil Ulang
+            </button>
+            <button
+              onClick={submitAttendance}
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? 'Memproses...' : 'Submit Absensi'}
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-export default AttendancePage;
+export default FaceRecognition;
