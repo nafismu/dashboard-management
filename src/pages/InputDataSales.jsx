@@ -60,17 +60,23 @@ const InputDataSales = () => {
     };
     
 
+    useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchDatabaseData = async () => {
         try {
-            const response = await axios.get('/api/sales-input');
+            const response = await axios.get('/api/sales-input', { signal });
             setDatabaseData(response.data); // Simpan data dari database ke state
         } catch (error) {
             console.error("Error saat mengambil data dari database:", error);
         }
-    };
-
-    useEffect(() => {
+    }
         fetchDatabaseData();
+
+        return () => {
+            controller.abort();
+        };
     }, []);
 
     return (

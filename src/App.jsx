@@ -1,5 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LoadingSpinner from './components/LoadingSpinner';
+
 
 // Gunakan React.lazy untuk impor komponen secara dinamis
 const LoginPage = React.lazy(() => import('./components/Login'));
@@ -23,7 +25,7 @@ function App() {
     <Router>
       <div className="App">
         {/* Suspense untuk menangani fallback loading sementara komponen dimuat */}
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             {/* Halaman login dan register dapat diakses tanpa login */}
             <Route path="/" element={<LoginPage />} />

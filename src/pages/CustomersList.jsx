@@ -17,28 +17,29 @@ const CustomersList = () => {
     const API_URL = '/api/customers';
 
     useEffect(() => {
-        fetchCustomers();
-    }, []);
-
+    const controller = new AbortController();
+    const signal = controller.signal;
     const fetchCustomers = async () => {
         try {
-            setLoading(true);
-            const response = await axios.get(API_URL);
-            const records = response.data.map(record => ({
-                id: record.id,
-                name: record.name,
-                email: record.email,
-                phone: record.phone,
-                subscription: record.subscription,
-                signup_date: record.signup_date,
-            }));
-            setCustomers(records);
-            setLoading(false);
+        const response = await axios.get(API_URL, { signal });
+        const records = response.data.map(record => ({
+            id: record.id,
+            name: record.name,
+            email: record.email,
+            phone: record.phone,
+            subscription: record.subscription,
+            signup_date: record.signup_date,
+        }));
+        setCustomers(records);
+        setLoading(false);
         } catch (error) {
-            setError('Failed to fetch customers');
-            setLoading(false);
+        setError('Failed to fetch customers');
+        setLoading(false);
         }
-    };
+    }
+        fetchCustomers();
+        return () => controller.abort();
+    }, []);
 
     const handleCreate = async () => {
         const { value: formValues } = await Swal.fire({

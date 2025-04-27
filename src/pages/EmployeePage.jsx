@@ -16,53 +16,65 @@ function EmployeePage() {
 
 
   useEffect(() => {
-    // fetchData();
-    fetchCustomerCount();
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const fetchCustomerCount = async () => {
+      try {
+        const response = await fetch('/api/customers/customer-count', { signal });
+        const records = await response.json();
+        setTotalCustomers(records);
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.log('Fetch aborted');
+        } else {
+          console.error('Error fetching user:', error);
+        }
+      }
+    }
+    const fetchNewCustomers = async () => {
+      try {
+        const response = await fetch('/api/customers/new-customers', { signal });
+        const records = await response.json();
+        setNewCustomers(records);
+        console.log(newCustomers);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+    const fetchReturningCustomers = async () => {
+      try {
+        const response = await fetch('/api/customers/customers-return', { signal });
+        const records = await response.json();
+        setReturningCustomers(records);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+    const fetchusername = async () => {
+      try {
+        const response = await fetch('/api/user-id',{ signal });
+        const records = await response.json();
+        setUsername(records.data);
+        console.log(username)
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    }
+    
     fetchNewCustomers();
     fetchReturningCustomers();
     fetchusername();
-  },[]);
-  const fetchusername = async () => {
-    try {
-      const response = await fetch('/api/user-id');
-      const records = await response.json();
-      setUsername(records.data);
-      console.log(username)
-    } catch (error) {
-      console.error('Error fetching user:', error);
+    fetchCustomerCount();
+
+    return () => {
+      controller.abort();
     }
-  }
+  },[]);
+  
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
-  const fetchCustomerCount = async () => {
-    try {
-      const response = await fetch('/api/customers/customer-count');
-      const records = await response.json();
-      setTotalCustomers(records);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-  };
-  const fetchNewCustomers = async () => {
-    try {
-      const response = await fetch('/api/customers/new-customers');
-      const records = await response.json();
-      setNewCustomers(records);
-      console.log(newCustomers);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-  };
-  const fetchReturningCustomers = async () => {
-    try {
-      const response = await fetch('/api/customers/customers-return');
-      const records = await response.json();
-      setReturningCustomers(records);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-  };
+
 
   return (
     <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">

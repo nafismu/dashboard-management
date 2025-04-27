@@ -33,7 +33,20 @@ const EmployeeList = () => {
 
     // Fetch records on component mount
     useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const fetchCustomers = async () => {
+        try {
+            const response = await axios.get(API_URL, { signal });
+            setEmployees(response.data);
+            setLoading(false);
+        } catch (error) {
+            setError('Failed to fetch employee');
+            setLoading(false);
+        }
+    }
         fetchCustomers();
+        return () => controller.abort();
     }, []);
 
     // Fungsi untuk menambah pelanggan baru menggunakan SweetAlert

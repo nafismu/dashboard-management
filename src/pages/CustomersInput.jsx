@@ -40,7 +40,7 @@ const CustomersInput = () => {
       },
     };
 
-    axios.post('localhost:5000/api/customers', customerData)
+    axios.post('/api/customers', customerData)
       .then(response => {
         Swal.fire({
           title: 'Success!',
@@ -94,7 +94,7 @@ const CustomersInput = () => {
           },
         };
 
-        axios.post('localhost:5000/api/customers', customerData)
+        axios.post('/api/customers', customerData)
           .then(response => {
             Swal.fire({
               title: 'Success!',

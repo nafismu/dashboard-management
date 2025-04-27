@@ -16,13 +16,28 @@ const SaFunnel = () => {
   }
 
   useEffect(() => {
-    fetch('/api/sales-performance')
-      .then(response => response.json())
-      .then(data => {
-        setData(data);
-        setFilteredData(data);
-      })
-      .catch(error => console.error('Error:', error));
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const fetchSAFunnel = async () => {
+      try {
+        const response = await fetch('/api/sales-performance', { signal });
+        const records = await response.json();
+        setData(records);
+        setFilteredData(records);
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.log('Fetch aborted');
+        } else {
+          console.error('Error fetching user:', error);
+        }
+      }
+    }
+
+    fetchSAFunnel();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   const handleFilterChange = (event) => {

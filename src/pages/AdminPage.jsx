@@ -12,26 +12,37 @@ import Header from '../components/Header';
 function AdminPage() {
   const [user, setUser] = useState();
   const [isOpen, setIsOpen] = useState(false);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchcustomerCount = async () => {
+      try {
+        const response = await fetch('/api/customers/customer-count', { signal });
+        const records = await response.json();
+        setUser(records);
+        setLoading(false);
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.log('Fetch aborted');
+        } else {
+          console.error('Error fetching user:', error);
+          setLoading(true);
+        }
+      }
+    };
+
     fetchcustomerCount();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
-
-
-  const fetchcustomerCount = async () => {
-    try {
-      const response = await fetch('/api/customers/customer-count');
-      const records = await response.json();
-      setUser(records);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-  };
-
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
-
   return (
     <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white ">
       <Helmet><title>Admin Dashboard Page</title></Helmet>
@@ -83,5 +94,4 @@ function AdminPage() {
     </div>
   );
 }
-
 export default AdminPage;
