@@ -17,20 +17,6 @@ const EmployeeList = () => {
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     }
-
-    // Fetch all customers from the backend
-    const fetchCustomers = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get(API_URL);
-            setEmployees(response.data);
-            setLoading(false);
-        } catch (error) {
-            setError('Failed to fetch employee');
-            setLoading(false);
-        }
-    };
-
     // Fetch records on component mount
     useEffect(() => {
     const controller = new AbortController();
@@ -203,15 +189,6 @@ const EmployeeList = () => {
         }
     }
 };
-
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>{error}</div>;
-    }
 
   return (
     <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">

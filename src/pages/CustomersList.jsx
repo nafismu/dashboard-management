@@ -22,15 +22,7 @@ const CustomersList = () => {
     const fetchCustomers = async () => {
         try {
         const response = await axios.get(API_URL, { signal });
-        const records = response.data.map(record => ({
-            id: record.id,
-            name: record.name,
-            email: record.email,
-            phone: record.phone,
-            subscription: record.subscription,
-            signup_date: record.signup_date,
-        }));
-        setCustomers(records);
+        setCustomers(response.data);
         setLoading(false);
         } catch (error) {
         setError('Failed to fetch customers');
@@ -38,6 +30,7 @@ const CustomersList = () => {
         }
     }
         fetchCustomers();
+
         return () => controller.abort();
     }, []);
 
@@ -197,14 +190,6 @@ const CustomersList = () => {
             }
         }
     };
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>{error}</div>;
-    }
 
     return (
         <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
