@@ -52,7 +52,7 @@ function EmployeePage() {
     };
     const fetchusername = async () => {
       try {
-        const response = await fetch('/api/user-id',{ signal });
+        const response = await fetch('https://127.0.0.1:5000/api/user-id',{ signal });
         const records = await response.json();
         setUsername(records.data);
         console.log(username)

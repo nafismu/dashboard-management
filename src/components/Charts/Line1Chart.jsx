@@ -8,16 +8,23 @@ const Line1Chart = () => {
 
   useEffect(() => {
     // Fetch data from the API
-    axios
-      .get('/api/sales-performance')
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    axios.get('/api/sales-performance',{
+      signal,
+      method: 'GET',
+    }
+    )
       .then((response) => {
         setData(response.data); // Update state with fetched data
-        
-
       })
       .catch((error) => {
         console.error('Error fetching data:', error); // Log any errors
       });
+      return () => {
+        controller.abort();
+      };
   }, []);
   const threshold = 5; // Performansi minimal
   const filteredData = data

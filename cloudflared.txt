@@ -1,0 +1,7 @@
+tunnel: tunnel-rumah
+credentials-file: /home/nafismu/.cloudflared/9057320d-6919-4b54-8f12-19c3aef611c6.json
+
+ingress:
+  - hostname: vps.nafismu.xyz
+    service: http://10.10.10.253
+  - service: http_status:404

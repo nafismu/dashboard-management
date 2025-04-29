@@ -5,9 +5,12 @@ const MotivationalCard = () => {
   const [motivationText, setMotivationText] = useState("Loading...");
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchMotivation = async () => {
       try {
-        const response = await axios.get('/api/motivation');
+        const response = await axios.get('/api/motivation',{signal});
         const randomIndex = Math.floor(Math.random() * response.data.length);
         setMotivationText(response.data[randomIndex]);
       } catch (error) {
@@ -16,6 +19,9 @@ const MotivationalCard = () => {
       }
     };
     fetchMotivation();
+    return () => {
+      controller.abort();
+    };
   }, []); // Dependency array kosong
 
   return (

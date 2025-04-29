@@ -8,6 +8,7 @@ import { BellIcon, ChevronDoubleUpIcon, } from '@heroicons/react/outline';
 import MotivationalCard from '../components/MotivationalCard';
 import Helmet from 'react-helmet';
 import Header from '../components/Header';
+import api from '../components/AxiosInstance';
 
 function AdminPage() {
   const [user, setUser] = useState();
