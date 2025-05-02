@@ -14,10 +14,8 @@ const LineChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const salesResponse = await axios.get('/api/sales-performance');
+        const salesResponse = await axios.get('https://api.nafismu.xyz/api/sales-performance');
         setData(salesResponse.data);
-
-        const predictionResponse = await axios.get('/api/sales-performance/prediction');
         setPredictions(predictionResponse.data.predictions);
       } catch (error) {
         console.error("Error fetching data:", error);

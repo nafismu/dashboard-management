@@ -20,7 +20,7 @@ const SaFunnel = () => {
     const signal = controller.signal;
     const fetchSAFunnel = async () => {
       try {
-        const response = await fetch('/api/sales-performance', { signal });
+        const response = await fetch('https://api.nafismu.xyz/api/sales-performance', { signal });
         const records = await response.json();
         setData(records);
         setFilteredData(records);

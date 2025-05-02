@@ -16,12 +16,10 @@ function AdminPage() {
   // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
 
     const fetchcustomerCount = async () => {
       try {
-        const response = await fetch('/api/customers/customer-count', { signal });
+        const response = await fetch('https://api.nafismu.xyz/api/customers/customer-count');
         const records = await response.json();
         setUser(records);
         setLoading(false);
@@ -37,9 +35,6 @@ function AdminPage() {
 
     fetchcustomerCount();
 
-    return () => {
-      controller.abort();
-    };
   }, []);
   const toggleSidebar = () => {
     setIsOpen(!isOpen);

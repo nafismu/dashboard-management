@@ -23,7 +23,7 @@ const SaPerformance = () => {
     const signal = controller.signal;
     const fetchSalesPerformance = async () => {
       try {
-        const response = await fetch('/api/sales-performance', { signal });
+        const response = await fetch('https://api.nafismu.xyz/api/sales-performance', { signal });
         const records = await response.json();
         setData(records);
         setFilteredData(records);
@@ -60,7 +60,7 @@ const SaPerformance = () => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('/api/upload', formData, {
+      const response = await axios.post('https://api.nafismu.xyz/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

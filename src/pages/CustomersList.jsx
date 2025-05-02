@@ -14,7 +14,7 @@ const CustomersList = () => {
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
-    const API_URL = '/api/customers';
+    const API_URL = 'https://api.nafismu.xyz/api/customers';
 
     useEffect(() => {
     const controller = new AbortController();

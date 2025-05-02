@@ -11,10 +11,7 @@ const Line1Chart = () => {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    axios.get('/api/sales-performance',{
-      signal,
-      method: 'GET',
-    }
+    axios.get('https://api.nafismu.xyz/api/sales-performance'
     )
       .then((response) => {
         setData(response.data); // Update state with fetched data

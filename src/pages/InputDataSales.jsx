@@ -30,7 +30,7 @@ const InputDataSales = () => {
         event.preventDefault(); // Prevents page reload on form submission
         try {
             // Sending data to the backend API using Axios
-            const response = await axios.post('/api/sales-input', salesData, {
+            const response = await axios.post('https://api.nafismu.xyz/api/sales-input', salesData, {
                 headers: { 'Content-Type': 'application/json' },
             });
             
@@ -66,7 +66,7 @@ const InputDataSales = () => {
 
     const fetchDatabaseData = async () => {
         try {
-            const response = await axios.get('/api/sales-input', { signal });
+            const response = await axios.get('https://api.nafismu.xyz/api/sales-input', { signal });
             setDatabaseData(response.data); // Simpan data dari database ke state
         } catch (error) {
             console.error("Error saat mengambil data dari database:", error);

@@ -20,7 +20,7 @@ function EmployeePage() {
     const signal = controller.signal;
     const fetchCustomerCount = async () => {
       try {
-        const response = await fetch('/api/customers/customer-count', { signal });
+        const response = await fetch('https://api.nafismu.xyz/api/customers/customer-count', { signal });
         const records = await response.json();
         setTotalCustomers(records);
       } catch (error) {
@@ -33,7 +33,7 @@ function EmployeePage() {
     }
     const fetchNewCustomers = async () => {
       try {
-        const response = await fetch('/api/customers/new-customers', { signal });
+        const response = await fetch('https://api.nafismu.xyz/api/customers/new-customers', { signal });
         const records = await response.json();
         setNewCustomers(records);
         console.log(newCustomers);
@@ -43,7 +43,7 @@ function EmployeePage() {
     };
     const fetchReturningCustomers = async () => {
       try {
-        const response = await fetch('/api/customers/customers-return', { signal });
+        const response = await fetch('https://api.nafismu.xyz/api/customers/customers-return', { signal });
         const records = await response.json();
         setReturningCustomers(records);
       } catch (error) {
@@ -52,7 +52,7 @@ function EmployeePage() {
     };
     const fetchusername = async () => {
       try {
-        const response = await fetch('https://127.0.0.1:5000/api/user-id',{ signal });
+        const response = await fetch('https://api.nafismu.xyz/api/user-id',{ signal });
         const records = await response.json();
         setUsername(records.data);
         console.log(username)

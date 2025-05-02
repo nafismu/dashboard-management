@@ -55,7 +55,7 @@ const FaceRecognition = () => {
       formData.append('image', image);
       formData.append('name', username);
       formData.append('role', role);
-      const response = await axios.post('/api/attendance-process/register', formData);
+      const response = await axios.post('https://api.nafismu.xyz/api/attendance-process/register', formData);
       setLoading(false);
       Swal.fire({
         icon: 'success',

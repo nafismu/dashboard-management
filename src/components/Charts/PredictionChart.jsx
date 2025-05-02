@@ -10,7 +10,7 @@ const PredictionChart = () => {
   useEffect(() => {
     const fetchPredictions = async () => {
       try {
-        const response = await axios.get('/api/predict', { // Prediksi untuk 3 bulan
+        const response = await axios.get('https://api.nafismu.xyz/api/predict', { // Prediksi untuk 3 bulan
         });
         setSalesData(response.data.sales_predictions);
         // setCustomerData(response.data.customers);

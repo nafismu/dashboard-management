@@ -11,7 +11,7 @@ const EmployeeList = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [editEmployees, setEditEmployees] = useState(null);
-    const API_URL = '/api/employees'; // Sesuaikan dengan URL API backend Anda
+    const API_URL = 'https://api.nafismu.xyz/api/employees'; // Sesuaikan dengan URL API backend Anda
     const [isOpen,setIsOpen] = useState(false);
 
     const toggleSidebar = () => {

@@ -52,7 +52,7 @@ const FaceRecognition = () => {
       formData.append('image', image);
       formData.append('name', username);
 
-      const response = await axios.post('/api/attendance-process/verify-face', formData
+      const response = await axios.post('https://api.nafismu.xyz/api/attendance-process/verify-face', formData
         ,{
           headers: {
             scheme:'https',

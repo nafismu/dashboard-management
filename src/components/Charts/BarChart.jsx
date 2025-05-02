@@ -30,7 +30,7 @@ const BarChart = () => {
     const fetchData = async () => {
       try {
         // Mengambil data dari endpoint backend
-        const response = await axios.get('/api/sales-data');
+        const response = await axios.get('https://api.nafismu.xyz/api/sales-data');
 
         const { labels, sales } = response.data; // Ekstraksi data
 
