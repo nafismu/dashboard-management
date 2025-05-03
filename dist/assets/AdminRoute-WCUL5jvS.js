@@ -1,0 +1,1 @@
+import{j as t,O as a,N as s}from"./index-DavSq415.js";const n=()=>{const e=localStorage.getItem("token"),o=localStorage.getItem("role");return e&&o==="admin"?t.jsx(a,{}):t.jsx(s,{to:"/unauthorized"})};export{n as default};
